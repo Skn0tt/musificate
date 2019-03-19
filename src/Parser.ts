@@ -1,4 +1,5 @@
 import { Note } from "./Note";
+import { Scale } from "./Scale";
 
 const parseToNote =
   (char: string, right: string): Note =>
@@ -13,7 +14,8 @@ const PAUSE_VALUES: { [char: string]: number } = {
   ":": 256,
   " ": 128,
   "!": 1024,
-  "?": 1024
+  "?": 1024,
+  ",": 512
 };
 
 const PAUSE_CHARS = Object.keys(PAUSE_VALUES);
@@ -35,7 +37,7 @@ interface ParseResult {
   bass: Note[];
 }
 
-export const parseText = (text: string) => {
+export const parseText = (scale: Scale) => (text: string) => {
   const result: ParseResult = { melody: [], bass: [] };
 
   let stagedBassNote: Note = { pause: true, duration: 0 }
@@ -48,7 +50,7 @@ export const parseText = (text: string) => {
       // commit bass note
       if (!!stagedBassNote) {
         result.bass.push(stagedBassNote);
-        stagedBassNote = { pause: true, duration: 0 };
+        stagedBassNote = { pause: true, duration: 0 };
       }
 
       // commit pause
